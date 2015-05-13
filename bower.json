@@ -1,0 +1,24 @@
+{
+  "name": "polymer-slideshow",
+  "version": "1.0.0",
+  "authors": [
+    "Tobias Kündig <tobias.kuendig@offlinegmbh.ch>"
+  ],
+  "description": "Slideshow component built with polymer",
+  "keywords": [
+    "polymer",
+    "slideshow"
+  ],
+  "license": "MIT",
+  "homepage": "http://www.offlinegmbh.ch",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5"
+  }
+}

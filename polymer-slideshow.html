@@ -1,0 +1,129 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+<link rel="import" href="polymer-slide.html">
+
+<polymer-element name="polymer-slideshow">
+  <template>
+  <style>
+    :host {
+        box-sizing: border-box;
+        position: relative;
+        display: block;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    </style>
+    <content></content>
+  </template>
+  <script>
+    Polymer({
+        /**
+         * Public attributes
+         * 
+         * @var object
+         */
+        publish: {
+            defaultDuration: 10
+        },
+        /**
+         * The currently active polymer-slide element
+         * 
+         * @var HtmlElement
+         */
+        activeSlide: null,
+        /**
+         * The index of the currently active slide
+         * 
+         * @var int
+         */
+        activeSlideIndex: 0,
+        /**
+         * Total slide count
+         * 
+         * @var int
+         */
+        slideCount: 0,
+        /**
+         * Initialisation.
+         * 
+         * @return void
+         */
+        ready: function() {
+            this.slides = this.querySelectorAll('polymer-slide');
+            this.slideCount = this.slides.length;
+            this.setActiveSlide(0);
+        },
+        /**
+         * Go to next slide.
+         * 
+         * @return void
+         */
+        nextSlide: function() {
+            this.setActiveSlide(this.activeSlideIndex + 1);
+        },
+        /**
+         * Go to previous slide.
+         * 
+         * @return void
+         */
+        prevSlide: function() {
+            this.setActiveSlide(this.activeSlideIndex - 1);
+        },
+        /**
+         * Set the active slide.
+         * 
+         * @param  int slideIndex
+         * @return void
+         */
+        setActiveSlide: function(slideIndex) {
+
+            slideIndex = this._fixInvalidSlideIndex(slideIndex);
+
+            if(this.activeSlide !== null) {
+                this.activeSlide.classList.remove('is-active');
+            }
+
+            this.activeSlide = this.slides[slideIndex];
+            this.activeSlideIndex = slideIndex;
+
+            this.slides[slideIndex].classList.add('is-active');
+
+            var duration = this.slides[slideIndex].getAttribute('duration');
+            if(duration === null) {
+                duration = this.defaultDuration;  
+            } 
+            this._setTimeout(parseInt(duration * 1000));
+        },
+        /**
+         * Set the timeout for calling this.nextSlide()
+         * 
+         * @param  int duration
+         * @return void
+         */
+        _setTimeout: function(duration) {
+            if(duration == 0) return;
+
+            var that = this;
+            setTimeout(function() {
+                that.nextSlide();
+            }, duration);
+        },
+        /**
+         * Check if the slideIndex is inside 
+         * possible boundaries and fix it if not.
+         * 
+         * @param  int slideIndex
+         * @return int
+         */
+        _fixInvalidSlideIndex: function(slideIndex) {
+            if (slideIndex > this.slideCount - 1 ) {
+                slideIndex = 0;
+            } else if(slideIndex < 0) {
+                slideIndex = this.slideCount - 1;
+            }
+            return slideIndex;
+        }
+    });
+  </script>
+</polymer-element>
