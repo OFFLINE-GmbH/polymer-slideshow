@@ -102,7 +102,8 @@
          * @return void
          */
         _setTimeout: function(duration) {
-            if(duration == 0) return;
+            if(duration === 0 || this.slideCount <= 1) return;
+
 
             var that = this;
             setTimeout(function() {
